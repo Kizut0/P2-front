@@ -21,7 +21,7 @@ export default function Home() {
         </Link>
 
         <Link
-          to="/register"
+          to="/login"
           className="border border-blue-600 text-blue-600 px-6 py-3 rounded hover:bg-blue-50"
         >
           Get Started

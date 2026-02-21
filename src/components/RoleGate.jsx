@@ -1,15 +1,17 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import Loading from "./Loading";
 
 export default function RoleGate({
   children,
+  allow,
   allowedRoles = [],
   redirectTo = "/unauthorized",
 }) {
-  const { user, loading } = useAuth();
+  const { user, isLoading } = useAuth();
+  const roles = allow ?? allowedRoles;
 
-  if (loading) {
+  if (isLoading) {
     return <Loading />;
   }
 
@@ -18,9 +20,9 @@ export default function RoleGate({
     return <Navigate to="/login" replace />;
   }
 
-  if (!allowedRoles.includes(user.role)) {
+  if (!roles.includes(user.role)) {
     return <Navigate to={redirectTo} replace />;
   }
 
-  return children;
+  return children ?? <Outlet />;
 }

@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { authService } from "../../services/authService";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [form, setForm] = useState({
     email: "",
@@ -27,17 +28,14 @@ export default function Login() {
       setLoading(true);
       setError("");
 
-      const data = await authService.login(form);
-
-      // Optional: redirect by role
-      if (data.user.role === "admin") {
-        navigate("/admin");
-      } else {
-        navigate("/dashboard");
-      }
+      const data = await login(form);
+      const role = String(data?.user?.role || "").toLowerCase();
+      if (role === "admin") navigate("/admin/dashboard");
+      else if (role === "client") navigate("/client/dashboard");
+      else navigate("/freelancer/dashboard");
     } catch (err) {
       setError(
-        err.response?.data?.message || "Login failed"
+        err.response?.data?.message || err.message || "Login failed"
       );
     } finally {
       setLoading(false);
