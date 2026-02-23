@@ -231,10 +231,10 @@ export default function Register() {
           <button
             type="submit"
             disabled={!validation.canSubmit}
-            className={`w-full py-2 rounded text-white ${
+            className={`w-full py-2 rounded border ${
               !validation.canSubmit
-                ? "bg-gray-400"
-                : "bg-blue-600 hover:bg-blue-700"
+                ? "bg-gray-100 text-gray-500"
+                : "bg-blue-600 hover:bg-blue-700 text-white border-blue-600"
             }`}
           >
             {loading ? "Creating account..." : "Register"}
